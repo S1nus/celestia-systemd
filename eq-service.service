@@ -1,0 +1,43 @@
+[Unit]
+Description=EQ Service
+After=celestia.service
+Requires=celestia.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+ExecStart=/usr/bin/eq-service
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=32768
+
+# Environment
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/ubuntu/.local/bin"
+Environment="RUST_LOG=info"
+Environment="CELESTIA_NODE_AUTH_TOKEN=NEVER_GONNA_GIVE_YOU_UP"
+Environment="CELESTIA_NODE_HTTP=http://0.0.0.0:26658"
+Environment="EQ_DB_PATH=/home/ubuntu/.eqs"
+Environment="EQ_SOCKET=0.0.0.0:50051"
+Environment="EQ_PORT=50051"
+Environment="EQ_PROTO_DIR=./common/proto"
+Environment="NETWORK_PRIVATE_KEY=NEVER_GONNA_LET_YOU_DOWN"
+Environment="PROOF_GEN_TIMEOUT_SECONDS=120"
+
+
+# Security settings
+NoNewPrivileges=true
+ReadWritePaths=/home/ubuntu/.eqs
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=eq-service
+
+[Install]
+WantedBy=multi-user.target
