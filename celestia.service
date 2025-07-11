@@ -1,0 +1,33 @@
+[Unit]
+Description=Celestia Light Node
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+ExecStart=/usr/bin/celestia light start --p2p.network mocha-4
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=32768
+
+# Environment
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/ubuntu/.local/bin"
+
+# Security settings
+NoNewPrivileges=true
+ReadWritePaths=/home/ubuntu/.celestia-light-mocha-4
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=celestia-light
+
+[Install]
+WantedBy=multi-user.target
